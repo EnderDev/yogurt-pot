@@ -1,4 +1,4 @@
-# Yogurt Pot
+# 📦 Yogurt Pot
 > A fat-free bundler for JavaScript projects
 
 ## Install
