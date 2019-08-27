@@ -1,5 +1,5 @@
 # 📦 Yogurt Pot
-> A fat-free bundler for JavaScript projects
+> A nimble, fat-free bundler, with easy to implement APIs 
 
 ## Install
 ```cli
