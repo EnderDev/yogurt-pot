@@ -22,22 +22,26 @@ class yogurt {
     return process.cwd();
   }
 
-  debugGlasses(base) {
+  /**
+   * @param {(base: any) => void} base
+   */
+  getContents(base, callback) {
     readdir(join(this.debugHome(), base), function(e, r) {
       if (e) {
         new MessageSpawn({
           state: 'warning',
           message: `Unable to resolve '${base}' in directory './${this.debugParsedCWD().base}'`
         });
-      } else {
-        return r;
+      }
+      if (!e) {
+        callback(r);
       }
     });
   }
 
   start() {
     const { y } = this;
-    const what = this;
+    const { getContents } = this;
 
     new MessageSpawn({
       state: '↪ ',
@@ -45,7 +49,9 @@ class yogurt {
       message: `Starting bundle for ${chalk.bold(y.name)}`
     });
 
-    what.debugGlasses(y.base).forEach(item => {});
+    getContents(y.base, files => {
+      console.log(files);
+    });
   }
 
   constructor(y) {

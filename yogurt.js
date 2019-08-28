@@ -2,7 +2,7 @@ const yogurt = require('./src/bundle.js');
 
 const bundle = new yogurt({
   name: 'main',
-  base: './demo'
+  base: '/demo'
 });
 
 bundle.start();
