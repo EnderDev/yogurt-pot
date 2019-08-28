@@ -1,0 +1,19 @@
+{
+  "name": "yogurt-pot",
+  "version": "0.0.1",
+  "description": "> A nimble, fat-free bundler, with easy to implement APIs",
+  "main": "yogurt.js",
+  "scripts": {
+    "test": "node yogurt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yogurt-pot/yogurt-pot.git"
+  },
+  "author": "EnderDev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yogurt-pot/yogurt-pot/issues"
+  },
+  "homepage": "https://github.com/yogurt-pot/yogurt-pot#readme"
+}
