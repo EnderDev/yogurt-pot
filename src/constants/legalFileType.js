@@ -1,1 +1,1 @@
-exports.fileTypes = ['js', 'ts', 'jsx', 'tsx', 'html'];
+exports.fileTypes = ['js', 'ts', 'jsx', 'tsx'];

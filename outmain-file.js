@@ -1,0 +1,1 @@
+function hello(o){console.log("Say hello to",o)}setTimeout(()=>{hello()},4e3);
