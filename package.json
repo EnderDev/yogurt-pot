@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/yogurt-pot/yogurt-pot/issues"
   },
-  "homepage": "https://github.com/yogurt-pot/yogurt-pot#readme"
+  "homepage": "https://github.com/yogurt-pot/yogurt-pot#readme",
+  "dependencies": {
+    "walk": "^2.3.14"
+  }
 }
