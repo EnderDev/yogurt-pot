@@ -5,8 +5,15 @@ const bundle = new yogurt({
   base: '/demo',
   output: '/out',
   log: {
-    showBundledFiles: true
-  }
+    showBundledFiles: true,
+  },
+  tasks: [{
+    name: 'done',
+    command: 'node out/main-file.js'
+  }, {
+    name: 'are-we-there-yet',
+    command: 'node out/multi_layer_folders.js'
+  }]
 });
 
 bundle.start();

@@ -18,6 +18,12 @@
   },
   "homepage": "https://github.com/yogurt-pot/yogurt-pot#readme",
   "dependencies": {
+    "chalk": "^2.4.2",
+    "fs-extra": "^8.1.0",
+    "moment": "^2.24.0",
+    "pretty-bytes": "^5.3.0",
+    "uglify-es": "github:mishoo/UglifyJS2#harmony",
+    "uglify-js": "^3.6.1",
     "walk": "^2.3.14"
   },
   "devDependencies": {
