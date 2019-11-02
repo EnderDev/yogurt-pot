@@ -6,6 +6,10 @@ const chalk = require('chalk');
 const { fileTypes } = require('../constants/legalFileType');
 const fs = require('fs');
 const json = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const file = require('file');
+const { filewalker } = require('../apis/walker');
+const { minify } = require('uglify-es');
+const forEach = require('async-foreach').forEach;
 global.version = json.version;
 
 class yogurt {
@@ -21,36 +25,16 @@ class yogurt {
    * @param {(base: any) => void} base
    */
   getContents(bundle, base, callback) {
-    const walker = walk(join(process.cwd(), base));
+    filewalker(join(process.cwd(), base), function(err, data) {
+      if (err) {
+        return console.log(chalk.red(`\n        ❌  ${err.message}`));
+      }
 
-    walker.on('errors', function(root, nodeStatsArray, next) {
-      console.log(
-        chalk.yellow(
-          `\n        ⚠  Warning in ${chalk.bold(
-            bundle
-          )} - Unable to resolve '${root}' in directory './${parse(process.cwd()).base}'`
-        )
-      );
-      console.log(chalk.magenta(`             🠶  No files will be bundled.`));
-      process.exit(0);
+      callback(data);
     });
-
-    // eslint-disable-next-line func-names
-    walker.on('end', function() {
-      console.log('all done');
-    });
-
-    // readdir(, function(e, r) {
-    //   if (e) {
-    //
-    //   }
-    //   if (!e) {
-    //     callback(r);
-    //   }
-    // });
   }
 
-  start() {
+  async start() {
     const { bundle } = this;
     const { getContents } = this;
 
@@ -62,21 +46,53 @@ class yogurt {
     );
 
     getContents(bundle.name, bundle.base, files => {
-      files.forEach(file => {
+      var current = 0;
+      var filesSize = 0;
+
+      files.forEach(i => {
+        if(fileTypes.includes(i.substr(i.lastIndexOf('.') + 1)) == true) {
+          ++filesSize
+        }
+      });
+
+      files.map(async (file) => {
         if (fileTypes.includes(file.substr(file.lastIndexOf('.') + 1)) == true) {
-          if (bundle.log && bundle.log.showBundledFiles === true) {
-            console.log(chalk.magenta(`        🠶  Bundled file${chalk.underline.bold(file)}`));
+          var fileName = '.' + file.split(process.cwd())[1].replace(/\\/g, '/');
+          var result = minify(fs.readFileSync(file, 'utf8'), {});
+          if (result.error) {
+            console.log(chalk.yellow(`        ⚠  Failed to bundle ${chalk.bold(fileName)}:${chalk.bold(`${result.error.line}:${result.error.pos}`)}.\n             🠶  ${result.error.message}\n`));
+          }
+          else {
+            fs.mkdir(join(process.cwd(), bundle.output), () => {
+              fs.writeFile(join(process.cwd(), bundle.output, file.split("\\").reverse()[0]), result.code, () => {
+                if (bundle.log && bundle.log.showBundledFiles === true) {
+                  console.log(chalk.magenta(`        🠶  Bundled file${chalk.underline.bold(fileName)}`));
+                }
+                ++current
+              });
+            });
           }
         }
       });
-      console.log(chalk.green(`\n    ✅  Completed bundle for ${chalk.bold(bundle.name)}`));
-    });
+
+      /* Really crappy callback thing. */
+      setInterval(() => {
+        if(current == filesSize) {
+          current = 0;
+          if (bundle.log && bundle.log.showBundledFiles === false) {
+            console.log(chalk.gray(`           Bundled ${chalk.bold(files.length)} files in total.`));
+          }
+          console.log(chalk.green(`\n    ✅  Completed bundle for ${chalk.bold(bundle.name)}`));
+          process.exit(0)
+        }
+      }, 1);
+    })
   }
 
   constructor(y) {
     // eslint-disable-next-line global-require
     // eslint-disable-next-line import/no-unresolved
-    console.log(chalk.bold(`\n    Yogurt Pot Bundler ${global.version}`));
+    console.log(chalk.bold(`\n  Yogurt Pot Bundler ${global.version}`));
 
     this.bundle = y;
   }

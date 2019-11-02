@@ -1,4 +1,4 @@
-const yogurt = require('./src/bundle.js');
+const { yogurt, task } = require('./src/bundle.js');
 
 const bundle = new yogurt({
   name: 'main',

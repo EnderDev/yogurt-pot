@@ -4,7 +4,8 @@
   "description": "> A nimble, fat-free bundler, with easy to implement APIs",
   "main": "yogurt.js",
   "scripts": {
-    "test": "node yogurt"
+    "test": "node yogurt && npm start",
+    "start": "node out/multi_layer_folders && node out/main-file"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,10 @@
   "homepage": "https://github.com/yogurt-pot/yogurt-pot#readme",
   "dependencies": {
     "walk": "^2.3.14"
+  },
+  "devDependencies": {
+    "async-foreach": "^0.1.3",
+    "file": "^0.2.2",
+    "uglify-es": "^3.3.9"
   }
 }
